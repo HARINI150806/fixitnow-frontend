@@ -1,5 +1,7 @@
 import axios from "axios";
 
+export const BASE_URL = process.env.REACT_APP_API_URL;
+export const WS_URL = process.env.REACT_APP_WS_URL || "ws://localhost:8080/ws";
 // ✅ Create an Axios instance for protected APIs
 const API = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}/api`,
