@@ -9,7 +9,7 @@ import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
-import ProviderDetailPage from "./pages/provider/ProviderDetailPage";
+import ProviderDetailPage from "./pages/Providers/ProviderDetailPage";
 import BookingSummaryPage from "./pages/Customer/BookingSummaryPage";
 import ChatPage from "./components/ChatPage";
 
