@@ -3,9 +3,13 @@ import axios from "axios";
 // =========================
 // BASE URL CONFIG
 // =========================
-export const BASE_URL = import.meta.env.VITE_API_URL;
-export const WS_URL = import.meta.env.VITE_WS_URL;
+export const BASE_URL =
+  import.meta.env.VITE_API_URL?.trim() ||
+  "https://fixitnow-backend-u4fv.onrender.com";
 
+export const WS_URL =
+  import.meta.env.VITE_WS_URL?.trim() ||
+  `${BASE_URL.replace("https", "wss")}/ws`;
 // Axios instance for protected APIs
 const API = axios.create({
   baseURL: `${BASE_URL}/api`,

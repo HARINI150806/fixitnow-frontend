@@ -5,7 +5,7 @@ import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import axiosInstance from "../utils/axiosInstance";
 import { useAuth } from "../context/AuthContext";
-import { WS_URL } from "../services/api";
+import { WS_URL,BASE_URL } from "../services/api";
 
 
 const ChatNotifications = () => {
