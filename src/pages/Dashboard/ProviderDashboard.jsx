@@ -447,7 +447,8 @@ const [token] = useState(localStorage.getItem("token")); // Removed setToken - n
         <FiX size={20} />
       </button>
     <div className="flex justify-center items-center w-full max-w-[90vw]">
-    <ChatComponent token={token} receiverId={13} theme={"admin"} />
+    <ChatComponent receiverId={adminId} theme="admin" />
+
   </div>
     
 </div>

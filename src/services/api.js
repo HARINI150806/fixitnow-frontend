@@ -40,12 +40,20 @@ export const uploadProviderDocument = (providerId, file) => {
   const formData = new FormData();
   formData.append("file", file);
 
+
+
   return axios.post(
     `${BASE_URL}/api/auth/upload-documents/${providerId}`,
     formData,
     { headers: { "Content-Type": "multipart/form-data" } }
   );
 };
+
+const fetchAdmin = async () => {
+  const res = await API.get("/users/admin");
+  setAdminId(res.data.id);
+};
+
 
 // =============================
 // SERVICE APIs
