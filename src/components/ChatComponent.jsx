@@ -76,7 +76,8 @@ const ChatComponent = ({
       .then(() => console.log("✅ Marked notifications from sender as read"))
       .catch((err) => console.error("❌ Failed to mark notifications as read:", err));
 
-    getMessagesWithUser(receiverId)
+    getMessagesWithUser(user.id, receiverId)
+
       .then((res) => {
         setMessages(res.data || []);
       })
