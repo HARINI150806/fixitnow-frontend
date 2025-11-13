@@ -10,7 +10,8 @@ import {
 } from "react-icons/hi";
 import { FaHome, FaWrench } from "react-icons/fa";
 import { register } from "../../services/api";
-import tools from "../../assets/tools.png";
+import tools from "../../images/tools.png";
+
 
 export default function Registration() {
   const [fullname, setFullname] = useState("");
