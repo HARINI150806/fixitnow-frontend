@@ -169,40 +169,48 @@ const ChatComponent = ({
 
   // ✅ Send message
   const sendMessage = async () => {
-    if (!input.trim() || !user?.id) return;
+  if (!input.trim() || !user?.id) return;
 
-    const msgContent = input.trim();
-    setInput("");
+  const msgContent = input.trim();
+  setInput("");
 
-    const optimistic = {
-      id: `temp-${Date.now()}`,
-      senderId: user.id,
-      receiverId,
-      content: msgContent,
-      senderName: user.name || "You",
-      sentAt: new Date().toISOString(),
-      temp: true,
-    };
-
-    setMessages((prev) => [...prev, optimistic]);
-
-    try {
-      const client = stompClientRef.current;
-      if (client?.connected) {
-        console.log(`📤 Sending message to user ${receiverId}:`, msgContent);
-        client.publish({
-          destination: "/app/chat.sendMessage",
-          body: JSON.stringify({ receiverId, content: msgContent }),
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      } else {
-        console.log("🌐 WebSocket not connected, sending via REST API...");
-        await sendMessageAPI({ receiverId, content: msgContent });
-      }
-    } catch (err) {
-      console.error("❌ Send failed:", err);
-    }
+  const optimistic = {
+    id: `temp-${Date.now()}`,
+    senderId: user.id,
+    receiverId,
+    content: msgContent,
+    timestamp: new Date().toISOString(),
+    temp: true,
   };
+
+  setMessages((prev) => [...prev, optimistic]);
+
+  try {
+    const client = stompClientRef.current;
+
+    if (client?.connected) {
+      client.publish({
+        destination: "/app/chat.sendMessage",
+        body: JSON.stringify({
+          senderId: user.id,       // ✅ FIXED
+          receiverId,               // correct target
+          content: msgContent,
+          timestamp: new Date().toISOString(),  // correct timestamp
+        }),
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } else {
+      await sendMessageAPI({
+        senderId: user.id,
+        receiverId,
+        content: msgContent,
+      });
+    }
+  } catch (err) {
+    console.error("❌ Send failed:", err);
+  }
+};
+
 
   // Render message row
   const renderMessageRow = (msg, i) => {
@@ -228,10 +236,11 @@ const ChatComponent = ({
         >
           {msg.content}
           <div className="text-[10px] mt-1 opacity-70 text-right">
-            {new Date(msg.sentAt).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
+            {new Date(msg.timestamp || msg.sentAt).toLocaleTimeString([], {
+  hour: "2-digit",
+  minute: "2-digit",
+})}
+
           </div>
         </div>
       </div>
