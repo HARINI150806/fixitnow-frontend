@@ -7,7 +7,8 @@ import ChatComponent from "../../components/ChatComponent";
 import { MdMiscellaneousServices } from "react-icons/md";
 import { BiHistory } from "react-icons/bi";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import 'leaflet/dist/leaflet.css';
+import "./utils/leafletFix";
+
 
 
 import {
