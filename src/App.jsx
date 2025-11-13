@@ -12,6 +12,8 @@ import { AuthProvider } from "./context/AuthContext";
 import ProviderDetailPage from "./pages/Providers/ProviderDetailPage";
 import BookingSummaryPage from "./pages/Customer/BookingSummaryPage";
 import ChatPage from "./components/ChatPage";
+import 'leaflet/dist/leaflet.css';
+
 
 function App() {
   console.log("API URL:", import.meta.env.VITE_API_URL);
