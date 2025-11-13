@@ -127,7 +127,7 @@ export default function Login() {
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center filter blur-sm scale-105"
-        style={{ backgroundImage: "url('/tools.jpeg')" }}
+        style={{ backgroundImage: "url('/tools.png')" }}
       ></div>
       <div className="absolute inset-0 bg-black/40"></div>
 
