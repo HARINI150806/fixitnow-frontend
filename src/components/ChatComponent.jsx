@@ -91,7 +91,8 @@ const ChatComponent = ({
     }
 
     console.log("🌐 Opening WS connection for chat", receiverId);
-    const socket = new SockJS(WS_URL);
+    const socket = new SockJS(`${BASE_URL}/ws`);
+
     const client = new Client({
       webSocketFactory: () => socket,
       connectHeaders: { Authorization: `Bearer ${token}` },
