@@ -98,6 +98,8 @@ export default function CustomerDashboard() {
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [newReview, setNewReview] = useState("");
+  const [adminId, setAdminId] = useState(null);
+
   const [showAdminChat, setShowAdminChat] = useState(false);
   const [hoveredServiceId, setHoveredServiceId] = useState(null);
   const [categorySearch, setCategorySearch] = useState("");
@@ -148,6 +150,21 @@ export default function CustomerDashboard() {
       alert("Failed to submit review");
     }
   };
+  useEffect(() => {
+  const loadAdminId = async () => {
+    try {
+      const res = await getUserById(1); // admin ID from DB
+      setAdminId(res.data.id);
+      console.log("Admin ID loaded:", res.data.id);
+    } catch (err) {
+      console.error("Failed to fetch admin:", err);
+    }
+  };
+
+  loadAdminId();
+}, []);
+
+
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -506,16 +523,19 @@ setServicesWithDistance(
       )}
 
       {showAdminChat && (
-        <div className="fixed bottom-20 right-6 sm:right-10 bg-white shadow-2xl rounded-2xl w-[29rem] max-w-[90vw] h-[36rem] border border-gray-200 p-4 flex flex-col z-50 transition-all duration-300" style={{ transform: "translateY(0)" }}>
-          <button onClick={() => setShowAdminChat(false)} className="text-gray-500 hover:text-red-500 transition-colors flex justify-end">
-            <FiX size={20} />
-          </button>
-          <div className="flex justify-center items-center w-full max-w-[90vw]">
-            <ChatComponent receiverId={adminId} theme="admin" />
+  <div className="fixed bottom-20 right-6 bg-white shadow-2xl ...">
+    <button onClick={() => setShowAdminChat(false)} className="...">
+      <FiX size={20} />
+    </button>
 
-          </div>
-        </div>
-      )}
+    {adminId ? (
+      <ChatComponent receiverId={adminId} theme="admin" />
+    ) : (
+      <p className="text-center py-4">Loading admin chat…</p>
+    )}
+  </div>
+)}
+
 
       <button onClick={() => setShowAdminChat(!showAdminChat)} className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-full shadow-lg z-50 transition-transform hover:scale-105">
         <FiMessageCircle size={24} />

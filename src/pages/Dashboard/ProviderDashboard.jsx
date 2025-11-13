@@ -55,6 +55,8 @@ export default function ProviderDashboard() {
 
 
 const [customers, setCustomers] = useState([]);
+const [adminId, setAdminId] = useState(null);
+
 const [selectedCustomer, setSelectedCustomer] = useState(null);
 const [token] = useState(localStorage.getItem("token")); // Removed setToken - not used
 
@@ -158,6 +160,29 @@ const [token] = useState(localStorage.getItem("token")); // Removed setToken - n
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+  const loadAdminId = async () => {
+    try {
+      // Admin is ID = 1
+      const res = await getMyProfile(); 
+      const allUsers = await getAllUsers();
+      const admin = allUsers.data.find(u => u.role === "ADMIN");
+
+      if (admin) {
+        setAdminId(admin.id);
+        console.log("Admin ID loaded:", admin.id);
+      } else {
+        console.error("⚠ No admin found");
+      }
+    } catch (err) {
+      console.error("Error loading admin:", err);
+    }
+  };
+
+  loadAdminId();
+}, []);
+
 
   useEffect(() => {
   const fetchCustomers = async () => {
@@ -447,7 +472,11 @@ const [token] = useState(localStorage.getItem("token")); // Removed setToken - n
         <FiX size={20} />
       </button>
     <div className="flex justify-center items-center w-full max-w-[90vw]">
-    <ChatComponent receiverId={adminId} theme="admin" />
+    {adminId ? (
+  <ChatComponent receiverId={adminId} theme="admin" />
+) : (
+  <p className="text-center text-gray-500">Loading admin chat...</p>
+)}
 
   </div>
     
