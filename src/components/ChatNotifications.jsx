@@ -183,10 +183,17 @@ const ChatNotifications = () => {
   console.log("➡️ Current User Role:", userRole);
   console.log("➡️ Notification Object:", notification);
 
-  if (senderId === 13) {
-    console.log("✅ Sender is ADMIN → Triggering openAdminChat event");
-    window.dispatchEvent(new Event("openAdminChat"));
-  } else {
+ // Admin is the user with role ADMIN
+if (senderRole === "ADMIN") {
+  console.log("Admin message → opening admin chat");
+
+  window.dispatchEvent(
+    new CustomEvent("openAdminChat", { detail: { adminId: senderId } })
+  );
+
+  return;
+}
+ else {
     console.log("👤 Sender is not admin → Navigating normally");
 
     // 🧠 Delay redirect by 2 seconds so console logs are visible
