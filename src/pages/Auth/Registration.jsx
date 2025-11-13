@@ -148,13 +148,14 @@ export default function Registration() {
         const formData = new FormData();
         formData.append("file", document);
 
-        await fetch(
-  `${process.env.REACT_APP_API_URL}/api/auth/upload-documents/${userId}`,
+       await fetch(
+  `${import.meta.env.VITE_API_URL}/api/auth/upload-documents/${userId}`,
   {
     method: "POST",
     body: formData,
   }
 );
+
 
       }
 
