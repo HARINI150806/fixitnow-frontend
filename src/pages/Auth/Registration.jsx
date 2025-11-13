@@ -10,6 +10,7 @@ import {
 } from "react-icons/hi";
 import { FaHome, FaWrench } from "react-icons/fa";
 import { register } from "../../services/api";
+import tools from "../../assets/tools.png";
 
 export default function Registration() {
   const [fullname, setFullname] = useState("");
@@ -171,9 +172,9 @@ export default function Registration() {
     <div className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden py-16">
       {/* Background (unchanged) */}
       <div
-        className="absolute inset-0 bg-cover bg-center filter blur-sm scale-105"
-        style={{ backgroundImage: "url('/tools.jpeg')" }}
-      ></div>
+  className="absolute inset-0 bg-cover bg-center filter blur-sm scale-105"
+  style={{ backgroundImage: `url(${tools})` }}
+></div>
       <div className="absolute inset-0 bg-black/50"></div>
 
       {/* Logo */}
