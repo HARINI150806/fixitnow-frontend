@@ -83,12 +83,13 @@ export default function VerifyDocumentsTab() {
               <p className="text-xs text-gray-500 mb-2">
                 Uploaded: {new Date(doc.uploadedAt).toLocaleString()}
               </p>
-             <a
-  href={`${process.env.REACT_APP_API_URL}/${doc.fileUrl.replace(/\\/g, '/')}`}
+        <a
+  href={`${import.meta.env.VITE_API_URL}/${doc.fileUrl.replace(/\\/g, '/')}`}
   target="_blank"
   rel="noopener noreferrer"
   className="text-blue-600 underline text-sm mb-3 inline-block break-words"
 >
+
 
                 View Document
               </a>

@@ -1,5 +1,5 @@
 // 🌍 Base URLs (auto-switch between local & production)
-export const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+export const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 export const WS_URL = `${BASE_URL.replace("http", "ws")}/ws`;
 
 // 🚀 API Endpoints
