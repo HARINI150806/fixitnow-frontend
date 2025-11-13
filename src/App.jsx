@@ -14,6 +14,8 @@ import BookingSummaryPage from "./pages/Customer/BookingSummaryPage";
 import ChatPage from "./components/ChatPage";
 
 function App() {
+  console.log("API URL:", import.meta.env.VITE_API_URL);
+  console.log("WS URL:", import.meta.env.VITE_WS_URL);
   return (
     <AuthProvider>
       

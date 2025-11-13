@@ -3,8 +3,8 @@ import axios from "axios";
 // =========================
 // BASE URL CONFIG
 // =========================
-export const BASE_URL = process.env.REACT_APP_API_URL;
-export const WS_URL = process.env.REACT_APP_WS_URL;
+export const BASE_URL = import.meta.env.VITE_API_URL;
+export const WS_URL = import.meta.env.VITE_WS_URL;
 
 // Axios instance for protected APIs
 const API = axios.create({
