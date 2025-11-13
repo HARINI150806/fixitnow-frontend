@@ -12,7 +12,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProviderDetailPage from "./pages/Providers/ProviderDetailPage";
 import BookingSummaryPage from "./pages/Customer/BookingSummaryPage";
 import ChatPage from "./components/ChatPage";
-import "../../utils/leafletFix";
+import "./utils/leafletFix";
 
 
 
