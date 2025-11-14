@@ -10,11 +10,9 @@ import plumbing from "../../images/plumbing.png";
 import cleaning from "../../images/cleaning.png";
 import electrician from "../../images/electrician.png";
 import carpenter from "../../images/carpenter.png";
-import mechanic from "../../images/mechanic.png";
 
 import {
   FaHome,
-  FaWrench,
   FaStar,
   FaClipboardList,
   FaSignInAlt,
@@ -28,7 +26,6 @@ export default function Home() {
     { name: "Electrician", image: electrician },
     { name: "Carpentry", image: carpenter },
     { name: "General Repair", image: tools },
-    { name: "Mechanician", image: mechanic },
   ];
 
   const steps = [
@@ -50,7 +47,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative py-10 overflow-hidden">
       {/* BACKGROUND */}
       <div
         className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
@@ -61,9 +58,7 @@ export default function Home() {
       {/* NAVBAR */}
       <header className="absolute top-0 w-full px-6 py-4 flex justify-between items-center z-30">
         <div className="flex items-center space-x-3 text-white drop-shadow-lg">
-          
-          <FaHome className="text-white w-full h-full" />
-                    <FaWrench className="text-black w-5 h-5 absolute bottom-0 right-0" />
+          <FaHome className="text-white text-3xl" />
           <span className="text-2xl font-bold">FixItNow</span>
         </div>
 
@@ -86,8 +81,7 @@ export default function Home() {
       </header>
 
       {/* HERO */}
-      <section className="relative z-20 py-32 flex flex-col justify-center items-center text-center px-6">
-
+      <section className="relative z-20 min-h-screen flex flex-col justify-center items-center text-center px-6">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -103,6 +97,16 @@ export default function Home() {
           className="text-white text-lg mt-4 max-w-2xl opacity-90 drop-shadow-lg"
         >
           Electricians, Plumbers, Carpenters & Cleaners – all just a tap away.
+
+        {/* ROTATING SERVICE WORDS */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="text-2xl md:text-3xl font-semibold text-white mt-6 h-10"
+        >
+          <RotatingWords />
+        </motion.div>
         </motion.p>
 
         <motion.div
@@ -123,7 +127,7 @@ export default function Home() {
       </section>
 
       {/* POPULAR SERVICES */}
-      <section className="relative z-20 py-6 px-6">
+      <section className="relative z-20 py-10 px-6">
         <h2 className="text-center text-3xl font-bold text-white drop-shadow mb-8">
           Popular Services
         </h2>
@@ -151,7 +155,7 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS - NEW ICON BASED */}
-      <section className="relative z-20 py-16 px-6">
+      <section className="relative z-20 py-10 px-6">
         <h3 className="text-3xl font-bold text-white text-center mb-10 drop-shadow">
           How It Works
         </h3>
@@ -175,7 +179,7 @@ export default function Home() {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="relative z-20 py-16 text-center px-6">
+      <section className="relative z-20 py-10 text-center px-6">
         <h3 className="text-3xl font-bold text-white drop-shadow mb-10">
           Why Choose FixItNow?
         </h3>
@@ -184,7 +188,7 @@ export default function Home() {
           {[
             "Verified Professionals",
             "Fast Doorstep Service",
-            "Real Time Chat",
+            "Secure Payments",
             "24×7 Support",
           ].map((text, index) => (
             <motion.div
@@ -225,5 +229,30 @@ export default function Home() {
         © 2025 FixItNow — All Rights Reserved.
       </footer>
     </div>
+  );
+}
+function RotatingWords() {
+  const words = [
+    "Electrical Issues",
+    "Plumbing Problems",
+    "Cleaning Needs",
+    "Carpentry Work",
+    "Home Repairs"
+  ];
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % words.length);
+    }, 2000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <span className="text-purple-300 drop-shadow-lg transition-all duration-500">
+      {words[index]}
+    </span>
   );
 }
