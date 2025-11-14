@@ -1,166 +1,143 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-
-import { FaChevronRight } from "react-icons/fa";
-
-// Images
-import toolsBg from "../../images/tools.png";
-import cleaning from "../../images/cleaning.png";
-import plumbing from "../../images/plumbing.png";
-import electrician from "../../images/electrician.png";
-import painting from "../../images/painting.png";
+import React from "react";
+import { Wrench, MapPin, MessageCircle, Star } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const services = [
-    { name: "Cleaning", img: cleaning },
-    { name: "Plumbing", img: plumbing },
-    { name: "Electrician", img: electrician },
-    { name: "Painting", img: painting },
+  const categories = [
+    { name: "Electrician", icon: "⚡" },
+    { name: "Plumber", icon: "🔧" },
+    { name: "Carpenter", icon: "🪚" },
+    { name: "Appliance Repair", icon: "🛠️" },
+    { name: "Painter", icon: "🎨" },
+    { name: "Mechanic", icon: "🚗" },
   ];
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
-
   return (
-    <div className="relative min-h-screen overflow-hidden text-white">
+    <div className="min-h-screen bg-gray-50">
 
-      {/* Background Blur */}
-      <div
-        className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
-        style={{ backgroundImage: `url(${toolsBg})` }}
-      ></div>
-      <div className="absolute inset-0 bg-black/70"></div>
+      {/* NAVBAR */}
+      <header className="w-full bg-white shadow-md py-4 px-6 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-blue-600">FixItNow</h1>
 
-      {/* Floating effects */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, x: 60, y: -50 }}
-        transition={{ duration: 1.5 }}
-        className="absolute top-24 left-10 w-40 h-40 bg-orange-500/20 blur-2xl rounded-full"
-      ></motion.div>
+        <div className="flex gap-4">
+          <Link
+            to="/login"
+            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+          >
+            Login
+          </Link>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, x: -40, y: 40 }}
-        transition={{ duration: 1.5 }}
-        className="absolute bottom-24 right-20 w-56 h-56 bg-purple-600/20 blur-3xl rounded-full"
-      ></motion.div>
+          <Link
+            to="/signup"
+            className="border border-blue-600 text-blue-600 px-5 py-2 rounded-lg hover:bg-blue-50"
+          >
+            Signup
+          </Link>
+        </div>
+      </header>
 
-      {/* HEADER */}
-      <div className="relative z-20 flex justify-between items-center px-8 py-6">
-        <h1 className="text-3xl font-extrabold tracking-wide">
-          FixIt<span className="text-orange-400">Now</span>
-        </h1>
-
-        {!isLoggedIn && (
-          <div className="flex gap-4">
-            <button
-              onClick={() => navigate("/login")}
-              className="px-6 py-2 rounded-lg font-semibold bg-white/10 
-              border border-white/20 backdrop-blur-md hover:bg-white/20 transition"
-            >
-              Login
-            </button>
-
-            <button
-              onClick={() => navigate("/register")}
-              className="px-6 py-2 rounded-lg font-semibold bg-gradient-to-r 
-              from-orange-500 to-purple-600 hover:scale-105 transition shadow-lg"
-            >
-              Sign Up
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* CONTENT */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 pt-12">
-
-        {/* HERO */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center backdrop-blur-2xl bg-white/10 border border-white/20 
-          rounded-3xl p-10 shadow-xl"
-        >
-          <h1 className="text-5xl font-extrabold leading-snug drop-shadow-md">
-            Find Trusted Services<br />
-            Near You
+      {/* HERO SECTION */}
+      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-24 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+            Fast, Trusted Home Service Providers Near You
           </h1>
-
-          <p className="text-gray-300 mt-4 text-lg max-w-2xl mx-auto">
-            Plumbers, electricians, cleaning experts — book instantly in your neighborhood.
+          <p className="mt-4 text-lg md:text-xl opacity-90">
+            Electricians, plumbers, carpenters, and repair experts at your fingertips.
           </p>
 
-          {/* SEARCH BAR — SHOWN ONLY IF LOGGED IN */}
-          {isLoggedIn && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-8 flex flex-col sm:flex-row gap-4 justify-center"
+          <div className="mt-8">
+            <Link
+              to="/login"
+              className="bg-white text-blue-700 px-8 py-3 rounded-xl font-semibold text-lg shadow hover:bg-gray-100"
             >
-              <button
-                onClick={() => navigate("/services")}
-                className="px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r 
-                from-orange-500 to-purple-600 hover:scale-105 transition shadow-lg"
-              >
-                Explore Nearby Services
-              </button>
-            </motion.div>
-          )}
-        </motion.div>
-
-        {/* POPULAR SERVICES */}
-        <div className="mt-20">
-          <h2 className="text-3xl font-bold text-center mb-8 text-orange-300">
-            Popular Services
-          </h2>
-
-          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-            {services.map((s, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.15 }}
-                onClick={() => navigate(`/service/${s.name.toLowerCase()}`)}
-                className="cursor-pointer bg-white/10 backdrop-blur-xl border border-white/20 
-                rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition"
-              >
-                <img
-                  src={s.img}
-                  alt={s.name}
-                  className="w-full h-40 object-cover"
-                />
-                <div className="p-5 text-center">
-                  <h3 className="text-xl font-semibold text-orange-300">{s.name}</h3>
-                  <p className="text-gray-300 mt-1 text-sm">
-                    Reliable, trained professionals ready to help.
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+              Book Now (Login Required)
+            </Link>
           </div>
         </div>
+      </section>
 
-        {/* CTA */}
-        <div className="text-center mt-24 mb-20">
-          <button
-            onClick={() => navigate(isLoggedIn ? "/services" : "/register")}
-            className="px-10 py-4 text-xl rounded-xl text-white font-bold 
-            bg-gradient-to-r from-orange-500 to-purple-600 hover:scale-110 
-            transition shadow-xl flex items-center gap-3 mx-auto"
-          >
-            {isLoggedIn ? "Explore Services" : "Get Started"} <FaChevronRight />
-          </button>
+      {/* CATEGORIES */}
+      <section className="max-w-6xl mx-auto py-16 px-6">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+          Popular Service Categories
+        </h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          {categories.map((cat) => (
+            <div
+              key={cat.name}
+              className="bg-white p-6 rounded-xl shadow hover:shadow-lg border flex flex-col items-center cursor-pointer transition"
+            >
+              <span className="text-4xl mb-2">{cat.icon}</span>
+              <p className="font-medium text-gray-700">{cat.name}</p>
+            </div>
+          ))}
         </div>
-      </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="bg-white border-t py-20 px-6">
+        <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+          How FixItNow Works
+        </h2>
+
+        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-10">
+
+          <div className="p-6 bg-gray-50 rounded-xl shadow-sm text-center">
+            <MapPin className="mx-auto text-blue-600" size={45} />
+            <h3 className="font-semibold text-xl mt-4">1. Find Nearby Services</h3>
+            <p className="text-gray-600 mt-2">
+              Discover trusted service providers near your location.
+            </p>
+          </div>
+
+          <div className="p-6 bg-gray-50 rounded-xl shadow-sm text-center">
+            <Wrench className="mx-auto text-blue-600" size={45} />
+            <h3 className="font-semibold text-xl mt-4">2. Choose a Service</h3>
+            <p className="text-gray-600 mt-2">
+              View provider details, pricing, and customer reviews.
+            </p>
+          </div>
+
+          <div className="p-6 bg-gray-50 rounded-xl shadow-sm text-center">
+            <MessageCircle className="mx-auto text-blue-600" size={45} />
+            <h3 className="font-semibold text-xl mt-4">3. Book & Connect</h3>
+            <p className="text-gray-600 mt-2">
+              Login to chat and securely book service providers.
+            </p>
+          </div>
+
+        </div>
+
+        <div className="text-center mt-10">
+          <Link
+            to="/login"
+            className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold text-lg shadow hover:bg-blue-700"
+          >
+            Get Started (Login Required)
+          </Link>
+        </div>
+      </section>
+
+      {/* TRUST SECTION */}
+      <section className="bg-blue-600 text-white py-20 px-6">
+        <div className="max-w-5xl mx-auto text-center">
+          <Star size={60} className="mx-auto mb-4" />
+          <h2 className="text-4xl font-bold">Trusted & Verified Professionals</h2>
+          <p className="mt-4 text-lg opacity-90">
+            Every provider is verified by our admin team to ensure safety & quality.
+          </p>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="bg-gray-900 text-gray-300 py-8 mt-10">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-lg">&copy; 2025 FixItNow. All rights reserved.</p>
+        </div>
+      </footer>
+
     </div>
   );
 }
