@@ -80,7 +80,7 @@ export default function Home() {
     <div className="relative py-10 overflow-hidden">
       {/* BACKGROUND */}
       <div
-        className="absolute inset-0 bg-cover bg-center brightness-55"
+        className="absolute inset-0 bg-cover bg-center brightness-45"
         style={{ backgroundImage: `url(${tools})` }}
       ></div>
       <div className="absolute inset-0 bg-black/40"></div>
