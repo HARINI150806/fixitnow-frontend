@@ -1,3 +1,6 @@
+// Updated Home.jsx with aligned layout and icon-based "How It Works" section
+// (Images removed from How It Works section and replaced with icons)
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -7,10 +10,14 @@ import plumbing from "../../images/plumbing.png";
 import cleaning from "../../images/cleaning.png";
 import electrician from "../../images/electrician.png";
 import carpenter from "../../images/carpenter.png";
+import mechanic from "../../images/mechanic.png";
 
 import {
   FaHome,
   FaStar,
+  FaClipboardList,
+  FaSignInAlt,
+  FaCheckCircle,
 } from "react-icons/fa";
 
 export default function Home() {
@@ -20,11 +27,29 @@ export default function Home() {
     { name: "Electrician", image: electrician },
     { name: "Carpentry", image: carpenter },
     { name: "General Repair", image: tools },
+    { name: "Mechanician", image: mechanic },
+  ];
+
+  const steps = [
+    {
+      title: "Choose a Service",
+      icon: <FaClipboardList className="text-white text-5xl mx-auto" />,
+      desc: "Select from a wide range of home services.",
+    },
+    {
+      title: "Login & Book",
+      icon: <FaSignInAlt className="text-white text-5xl mx-auto" />,
+      desc: "Quick booking with trusted professionals.",
+    },
+    {
+      title: "Get It Fixed",
+      icon: <FaCheckCircle className="text-white text-5xl mx-auto" />,
+      desc: "Experts arrive and complete the job.",
+    },
   ];
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-
       {/* BACKGROUND */}
       <div
         className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
@@ -57,9 +82,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* HERO SECTION */}
+      {/* HERO */}
       <section className="relative z-20 min-h-screen flex flex-col justify-center items-center text-center px-6">
-
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -74,8 +98,7 @@ export default function Home() {
           transition={{ delay: 0.4 }}
           className="text-white text-lg mt-4 max-w-2xl opacity-90 drop-shadow-lg"
         >
-          Electricians, Plumbers, Carpenters & Cleaners – your home service
-          experts are just a tap away.
+          Electricians, Plumbers, Carpenters & Cleaners – all just a tap away.
         </motion.p>
 
         <motion.div
@@ -90,29 +113,9 @@ export default function Home() {
             from-purple-500 to-indigo-600 text-white font-semibold 
             shadow-xl hover:scale-110 transition"
           >
-            Book a Service (Login Required)
+            Book a Service
           </Link>
         </motion.div>
-
-        {/* FLOATING IMAGES */}
-        <div className="absolute left-10 bottom-20 w-40 opacity-80">
-          <motion.img
-            src={plumbing}
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 4 }}
-            className="rounded-2xl shadow-xl"
-          />
-        </div>
-
-        <div className="absolute right-10 bottom-28 w-40 opacity-80">
-          <motion.img
-            src={electrician}
-            animate={{ y: [0, -15, 0] }}
-            transition={{ repeat: Infinity, duration: 5 }}
-            className="rounded-2xl shadow-xl"
-          />
-        </div>
-
       </section>
 
       {/* POPULAR SERVICES */}
@@ -143,18 +146,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+      {/* HOW IT WORKS - NEW ICON BASED */}
       <section className="relative z-20 py-16 px-6">
         <h3 className="text-3xl font-bold text-white text-center mb-10 drop-shadow">
           How It Works
         </h3>
 
         <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto text-center">
-          {[ 
-            { title: "Choose a Service", image: electrician, desc: "Select the service you need." },
-            { title: "Login & Book", image: tools, desc: "Quick booking with verified professionals." },
-            { title: "Get It Fixed", image: plumbing, desc: "Sit back while experts handle the job." },
-          ].map((item, index) => (
+          {steps.map((step, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
@@ -163,11 +162,9 @@ export default function Home() {
               transition={{ delay: index * 0.2 }}
               className="bg-white/20 backdrop-blur-md p-8 rounded-xl border border-white/20 shadow-xl"
             >
-              <img src={item.image} className="h-24 mx-auto rounded-lg" />
-              <h4 className="text-white text-xl font-semibold mt-4">
-                {item.title}
-              </h4>
-              <p className="text-white/80 mt-2">{item.desc}</p>
+              {step.icon}
+              <h4 className="text-white text-xl font-semibold mt-4">{step.title}</h4>
+              <p className="text-white/80 mt-2">{step.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -183,8 +180,8 @@ export default function Home() {
           {[
             "Verified Professionals",
             "Fast Doorstep Service",
-            "Secure Online Payments",
-            "24×7 Customer Support",
+            "Secure Payments",
+            "24×7 Support",
           ].map((text, index) => (
             <motion.div
               key={index}
@@ -201,55 +198,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="relative z-20 py-16 px-6">
-        <h3 className="text-3xl font-bold text-white text-center mb-10 drop-shadow">
-          What Our Users Say
-        </h3>
-
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {[
-            {
-              text: "Plumber arrived exactly on time and fixed the issue quickly!",
-              img: plumbing,
-              name: "Priya S.",
-            },
-            {
-              text: "Electrician was professional, friendly, and fast.",
-              img: electrician,
-              name: "Raj K.",
-            },
-          ].map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white/20 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl"
-            >
-              <div className="flex items-center gap-4">
-                <img
-                  src={item.img}
-                  className="h-16 w-16 rounded-full object-cover shadow-lg"
-                />
-                <div>
-                  <p className="text-white">{item.text}</p>
-                  <p className="text-white/70 text-sm mt-1">— {item.name}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
       {/* PROVIDER CTA */}
       <section className="relative z-20 py-20 text-center px-6">
         <h3 className="text-3xl font-bold text-white drop-shadow mb-4">
           Are You a Service Provider?
         </h3>
         <p className="text-white opacity-90 max-w-lg mx-auto mb-6">
-          Join FixItNow to connect with real customers and grow your service business.
+          Join FixItNow to connect with real customers and grow your business.
         </p>
 
         <Link
