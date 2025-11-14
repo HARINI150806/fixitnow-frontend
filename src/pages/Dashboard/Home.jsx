@@ -1,207 +1,141 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Star, Wrench, MapPin, MessageCircle, CheckCircle } from "lucide-react";
+import { FaBolt, FaTools, FaShower, FaWrench, FaHome } from "react-icons/fa";
+import tools from "../../images/tools.png";
 
 export default function Home() {
   const categories = [
-    { name: "Electrician", icon: "⚡" },
-    { name: "Plumber", icon: "🔧" },
-    { name: "Carpenter", icon: "🪚" },
-    { name: "Appliance Repair", icon: "🛠️" },
-    { name: "Painter", icon: "🎨" },
-    { name: "Mechanic", icon: "🚗" },
+    { name: "Electrician", icon: <FaBolt /> },
+    { name: "Plumber", icon: <FaShower /> },
+    { name: "Carpenter", icon: <FaTools /> },
+    { name: "General Repair", icon: <FaWrench /> },
+    { name: "Home Services", icon: <FaHome /> },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="relative min-h-screen overflow-hidden">
 
-      {/* NAVBAR */}
-      <header className="fixed top-0 w-full bg-white shadow-md py-4 px-6 flex justify-between items-center z-50">
-        <h1 className="text-2xl font-bold text-blue-600">FixItNow</h1>
+      {/* BACKGROUND MATCHING LOGIN PAGE */}
+      <div
+        className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
+        style={{ backgroundImage: `url(${tools})` }}
+      ></div>
+      <div className="absolute inset-0 bg-black/40"></div>
+
+      {/* NAVBAR - SAME COLORFUL AESTHETIC */}
+      <header className="absolute top-0 w-full px-6 py-4 flex justify-between items-center z-20">
+        <div className="flex items-center space-x-2 text-white">
+          <div className="relative w-10 h-10">
+            <FaHome className="text-white w-full h-full" />
+            <FaWrench className="text-purple-400 w-5 h-5 absolute bottom-0 right-0" />
+          </div>
+          <span className="text-2xl font-bold drop-shadow-lg">FixItNow</span>
+        </div>
 
         <div className="flex gap-4">
           <Link
             to="/login"
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+            className="px-5 py-2 text-white rounded-md bg-gradient-to-r from-indigo-500 to-purple-600 hover:scale-105 transition shadow-lg"
           >
             Login
           </Link>
-
           <Link
             to="/signup"
-            className="border border-blue-600 text-blue-600 px-5 py-2 rounded-lg hover:bg-blue-50"
+            className="px-5 py-2 text-white rounded-md bg-white/20 hover:bg-white/30 hover:scale-105 transition shadow-md backdrop-blur-sm"
           >
             Signup
           </Link>
         </div>
       </header>
 
-      {/* HERO SECTION WITH BACKGROUND */}
-      <section
-        className="h-[90vh] bg-cover bg-center flex items-center justify-center text-white px-6"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1581091215367-59ab6a419c33?auto=format&fit=crop&w=1400&q=60')",
-        }}
-      >
-        <div className="backdrop-blur-sm bg-black/40 p-10 rounded-xl max-w-3xl text-center">
+      {/* HERO SECTION */}
+      <section className="relative z-10 min-h-screen flex flex-col justify-center items-center text-center px-4">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-5xl md:text-6xl font-bold text-white drop-shadow-2xl"
+        >
+          Home Repairs, Fast & Reliable
+        </motion.h1>
 
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl font-bold"
-          >
-            Fast, Trusted Home Service Providers
-          </motion.h1>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-white text-lg mt-4 max-w-2xl opacity-90 drop-shadow-lg"
+        >
+          Trusted electricians, plumbers, carpenters & home service professionals – just a few clicks away.
+        </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="mt-4 text-xl opacity-90"
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.7 }}
+          className="mt-10"
+        >
+          <Link
+            to="/login"
+            className="px-10 py-3 text-lg rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold shadow-xl hover:scale-110 transition"
           >
-            FixItNow connects you with nearby electricians, plumbers, carpenters, and repair experts.
-          </motion.p>
+            Get Started (Login Required)
+          </Link>
+        </motion.div>
 
-          <motion.div
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 1, duration: 0.5 }}
-            className="mt-8"
-          >
-            <Link
-              to="/login"
-              className="bg-white text-blue-700 px-8 py-3 rounded-xl font-semibold text-lg shadow hover:bg-gray-200"
-            >
-              Get Started (Login Required)
-            </Link>
-          </motion.div>
+        {/* ICONS ROW - MATCHING LOGIN PAGE STYLE */}
+        <div className="flex space-x-8 mt-16 text-white text-4xl drop-shadow-xl">
+          <FaBolt className="hover:text-indigo-300 transition" />
+          <FaWrench className="hover:text-indigo-300 transition" />
+          <FaTools className="hover:text-indigo-300 transition" />
+          <FaShower className="hover:text-indigo-300 transition" />
+          <FaHome className="hover:text-indigo-300 transition" />
         </div>
       </section>
 
-      {/* POPULAR CATEGORIES */}
-      <section className="max-w-6xl mx-auto py-20 px-6">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">
-          Popular Service Categories
+      {/* CATEGORY SECTION */}
+      <section className="relative z-10 py-16 px-6">
+        <h2 className="text-center text-3xl font-bold text-white drop-shadow mb-8">
+          Popular Services
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-4xl mx-auto">
           {categories.map((cat, index) => (
             <motion.div
               key={cat.name}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition cursor-pointer text-center"
+              className="flex flex-col items-center bg-white/20 backdrop-blur-sm border border-white/20 p-6 rounded-xl shadow-xl hover:bg-white/30 hover:scale-105 transition cursor-pointer"
             >
-              <span className="text-4xl mb-2">{cat.icon}</span>
-              <p className="font-semibold text-gray-700 mt-2">{cat.name}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section className="py-20 px-6 bg-white border-t">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-          How FixItNow Works
-        </h2>
-
-        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-10">
-          {[
-            { icon: <MapPin size={45} />, title: "Find Services Near You", desc: "Discover trusted providers around your area." },
-            { icon: <Wrench size={45} />, title: "Choose a Service", desc: "View reviews, pricing, & previous work." },
-            { icon: <MessageCircle size={45} />, title: "Book & Connect", desc: "Login required for booking and live chat." },
-          ].map((step, index) => (
-            <motion.div
-              key={step.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="bg-gray-50 p-8 rounded-xl shadow-md text-center"
-            >
-              <div className="text-blue-600 mx-auto">{step.icon}</div>
-              <h3 className="text-xl font-semibold mt-4">{step.title}</h3>
-              <p className="text-gray-600 mt-2">{step.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* STATS SECTION */}
-      <section className="bg-blue-600 text-white py-20 px-6 text-center">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            { count: "10,000+", label: "Happy Customers" },
-            { count: "1,000+", label: "Verified Providers" },
-            { count: "25+", label: "Service Categories" },
-          ].map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.2 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-4xl font-bold">{stat.count}</h3>
-              <p className="text-lg mt-2 opacity-90">{stat.label}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section className="py-20 px-6 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-          What Our Users Say
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            { name: "Aarav", text: "FixItNow helped me find an electrician in minutes. Super fast service!" },
-            { name: "Pooja", text: "The plumber I booked was professional and quick. Highly recommended!" },
-            { name: "Rahul", text: "Great platform for home services. Transparent pricing and trusted providers." },
-          ].map((review, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-white p-8 shadow-lg rounded-xl"
-            >
-              <Star className="text-yellow-400 mb-3" size={30} />
-              <p className="text-gray-700">"{review.text}"</p>
-              <h4 className="font-semibold text-gray-900 mt-4">- {review.name}</h4>
+              <div className="text-4xl text-white">{cat.icon}</div>
+              <p className="text-white mt-3 font-semibold">{cat.name}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* PROVIDER CTA */}
-      <section className="bg-indigo-700 text-white py-20 px-6 text-center">
-        <h2 className="text-3xl font-bold">Are You a Service Provider?</h2>
-        <p className="mt-3 text-lg opacity-90">
-          Join FixItNow and grow your business with verified customers.
+      <section className="relative z-10 py-20 text-center">
+        <h3 className="text-3xl font-bold text-white drop-shadow mb-4">
+          Are You a Service Provider?
+        </h3>
+        <p className="text-white opacity-90 max-w-lg mx-auto mb-6">
+          Join FixItNow to connect with real customers and grow your business quickly.
         </p>
 
         <Link
           to="/signup"
-          className="mt-8 inline-block bg-white text-indigo-700 px-8 py-3 rounded-xl text-lg font-semibold hover:bg-gray-200"
+          className="px-10 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:scale-110 transition shadow-lg"
         >
           Become a Provider
         </Link>
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-gray-900 text-gray-300 py-10 mt-10">
-        <div className="max-w-6xl mx-auto text-center">
-          <p>&copy; 2025 FixItNow. All rights reserved.</p>
-        </div>
+      <footer className="relative z-10 text-center py-8 text-white opacity-80">
+        © 2025 FixItNow. All rights reserved.
       </footer>
+
     </div>
   );
 }
