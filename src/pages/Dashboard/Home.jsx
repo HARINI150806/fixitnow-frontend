@@ -1,44 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaBolt, FaTools, FaWrench, FaHome, FaStar, FaUserTie } from "react-icons/fa";
-
-import tools from "../../images/tools.png";
 import {
-  getTopServices,
-  getTopProviders,
-  getAnalyticsSummary,
-} from "../../services/api";
+  FaBolt,
+  FaTools,
+  FaWrench,
+  FaHome,
+  FaShower,
+  FaHammer,
+} from "react-icons/fa";
+import tools from "../../images/tools.png";
 
 export default function Home() {
-  const [topServices, setTopServices] = useState([]);
-  const [topProviders, setTopProviders] = useState([]);
-  const [analytics, setAnalytics] = useState({});
-
-  // Fetch dynamic data from backend
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const serviceRes = await getTopServices();
-        setTopServices(serviceRes.data || []);
-
-        const providerRes = await getTopProviders();
-        setTopProviders(providerRes.data || []);
-
-        const statsRes = await getAnalyticsSummary();
-        setAnalytics(statsRes.data || {});
-      } catch (err) {
-        console.error("Failed to load home page data:", err);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const categories = [
+    { name: "Electrician", icon: <FaBolt /> },
+    { name: "Plumber", icon: <FaShower /> },
+    { name: "Carpenter", icon: <FaHammer /> },
+    { name: "General Repair", icon: <FaTools /> },
+    { name: "Home Service", icon: <FaHome /> },
+    { name: "Mechanic", icon: <FaWrench /> },
+  ];
 
   return (
     <div className="relative min-h-screen overflow-hidden">
 
-      {/* BACKGROUND */}
+      {/* BACKGROUND (MATCH LOGIN PAGE) */}
       <div
         className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
         style={{ backgroundImage: `url(${tools})` }}
@@ -47,12 +33,12 @@ export default function Home() {
 
       {/* NAVBAR */}
       <header className="absolute top-0 w-full px-6 py-4 flex justify-between items-center z-20">
-        <div className="flex items-center space-x-2 text-white">
-          <div className="relative w-10 h-10 drop-shadow-lg">
+        <div className="flex items-center space-x-2 text-white drop-shadow-lg">
+          <div className="relative w-10 h-10">
             <FaHome className="text-white w-full h-full" />
             <FaWrench className="text-purple-400 w-5 h-5 absolute bottom-0 right-0" />
           </div>
-          <span className="text-2xl font-bold drop-shadow-lg">FixItNow</span>
+          <span className="text-2xl font-bold">FixItNow</span>
         </div>
 
         <div className="flex gap-3">
@@ -72,13 +58,13 @@ export default function Home() {
       </header>
 
       {/* HERO SECTION */}
-      <section className="relative z-10 min-h-screen flex flex-col justify-center items-center text-center px-4">
+      <section className="relative z-20 min-h-screen flex flex-col justify-center items-center text-center px-6">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-5xl md:text-6xl font-bold text-white drop-shadow-2xl"
         >
-          Trusted Home Repairs, Anytime.
+          Fast, Trusted Home Services
         </motion.h1>
 
         <motion.p
@@ -87,97 +73,90 @@ export default function Home() {
           transition={{ delay: 0.4 }}
           className="text-white text-lg mt-4 max-w-2xl opacity-90 drop-shadow-lg"
         >
-          Fast and reliable professionals for all your home service needs.
-          Book electricians, plumbers, carpenters, and more.
+          Electricians, plumbers, carpenters, and repair experts — ready to help
+          you anytime, anywhere.
         </motion.p>
 
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.7 }}
           className="mt-10"
         >
           <Link
             to="/login"
             className="px-10 py-3 text-lg rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold shadow-xl hover:scale-110 transition"
           >
-            Get Started (Login Required)
+            Book Your Service (Login Required)
           </Link>
         </motion.div>
 
+        {/* ICON STRIP SAME AS LOGIN */}
         <div className="flex space-x-8 mt-16 text-white text-4xl drop-shadow-xl">
           <FaBolt className="hover:text-indigo-300 transition" />
-          <FaWrench className="hover:text-indigo-300 transition" />
           <FaTools className="hover:text-indigo-300 transition" />
+          <FaWrench className="hover:text-indigo-300 transition" />
           <FaHome className="hover:text-indigo-300 transition" />
+          <FaShower className="hover:text-indigo-300 transition" />
         </div>
       </section>
 
-      {/* ANALYTICS SECTION */}
-      <section className="relative z-20 py-10 px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {[
-            { label: "Total Users", count: analytics.totalUsers || 0 },
-            { label: "Total Services", count: analytics.totalServices || 0 },
-            { label: "Bookings Completed", count: analytics.completedBookings || 0 },
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-white/20 backdrop-blur-sm border border-white/20 p-6 rounded-xl text-center shadow-lg"
-            >
-              <h3 className="text-4xl font-bold text-white drop-shadow">{item.count}</h3>
-              <p className="mt-2 text-white text-lg">{item.label}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* TOP SERVICES */}
-      <section className="relative z-20 py-12 px-6">
-        <h2 className="text-3xl font-bold text-white text-center mb-6 drop-shadow">
+      {/* POPULAR CATEGORIES */}
+      <section className="relative z-20 py-16 px-6">
+        <h2 className="text-center text-3xl font-bold text-white drop-shadow mb-8">
           Popular Services
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {topServices.slice(0, 3).map((service, index) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
+          {categories.map((cat, index) => (
             <motion.div
-              key={service.id}
+              key={cat.name}
               initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white/20 backdrop-blur-sm border border-white/20 p-6 rounded-xl shadow-xl hover:scale-105 transition"
+              className="flex flex-col items-center bg-white/20 backdrop-blur-sm border border-white/20 p-6 rounded-xl shadow-xl hover:bg-white/30 hover:scale-105 transition cursor-pointer"
             >
-              <FaTools className="text-white text-4xl mb-3" />
-              <h3 className="text-xl font-semibold text-white">{service.category}</h3>
-              <p className="text-white/80 text-sm mt-2">{service.description}</p>
+              <div className="text-4xl text-white">{cat.icon}</div>
+              <p className="text-white mt-3 font-semibold">{cat.name}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* TOP PROVIDERS */}
-      <section className="relative z-20 py-12 px-6">
-        <h2 className="text-3xl font-bold text-white text-center mb-6 drop-shadow">
-          Top Rated Providers
-        </h2>
+      {/* HOW IT WORKS */}
+      <section className="relative z-20 py-20 text-center px-6">
+        <h3 className="text-3xl font-bold text-white drop-shadow mb-10">
+          How FixItNow Works
+        </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {topProviders.slice(0, 3).map((provider, index) => (
+        <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+          {[
+            {
+              icon: <FaHome size={40} />,
+              title: "Choose a Service",
+              desc: "Select from electricians, plumbers, carpenters and more.",
+            },
+            {
+              icon: <FaTools size={40} />,
+              title: "Login & Book",
+              desc: "Login to access booking, chat, and secure payments.",
+            },
+            {
+              icon: <FaWrench size={40} />,
+              title: "Get It Fixed",
+              desc: "Track your booking and get your job done fast.",
+            },
+          ].map((item, index) => (
             <motion.div
-              key={provider.id}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.1 }}
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-white/20 backdrop-blur-sm border border-white/20 p-6 rounded-xl shadow-xl hover:scale-105 transition"
+              className="bg-white/20 backdrop-blur-sm border border-white/20 p-8 rounded-xl shadow-xl text-center"
             >
-              <FaUserTie className="text-white text-4xl mb-3" />
-              <h3 className="text-xl font-semibold text-white">{provider.name}</h3>
-              <p className="text-white/80">Rating: ⭐ {provider.averageRating || 0}</p>
+              <div className="text-white mx-auto">{item.icon}</div>
+              <h4 className="text-xl text-white font-bold mt-4">{item.title}</h4>
+              <p className="text-white/80 mt-2">{item.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -189,7 +168,7 @@ export default function Home() {
           Are You a Service Provider?
         </h3>
         <p className="text-white opacity-90 max-w-lg mx-auto mb-6">
-          Join FixItNow and earn more by connecting with real customers every day.
+          Join FixItNow to connect with real customers and grow your business.
         </p>
 
         <Link
