@@ -120,8 +120,9 @@ export const getReviewByBookingId = (bookingId) =>
 export const sendMessageAPI = (messageData) =>
   API.post("/messages", messageData);
 
-export const getMessagesWithUser = (userId) =>
-  API.get(`/messages/between/${userId}`);
+export const getMessagesWithUser = (receiverId) =>
+  API.get(`/messages/between/${receiverId}`);
+
 
 // =============================
 // DOCUMENT APIs
