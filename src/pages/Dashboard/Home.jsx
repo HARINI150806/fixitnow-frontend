@@ -7,8 +7,8 @@ import plumbing from "../../images/plumbing.png";
 import cleaning from "../../images/cleaning.png";
 import electrician from "../../images/electrician.png";
 import carpenter from "../../images/carpenter.png";
-import mechanic from "../../images/mechanic.png";
-import worker from "../../images/worker.png";
+// import mechanic from "../../images/mechanic.png";
+// import worker from "../../images/worker.png";
 
 import {
   FaBolt,
@@ -27,7 +27,7 @@ export default function Home() {
     { name: "Electrician", image: electrician },
     { name: "Carpentry", image: carpenter },
     { name: "General Repair", image: tools },
-    { name: "Mechanic", image: mechanic },
+    // { name: "Mechanic", image: mechanic },
   ];
 
   return (
