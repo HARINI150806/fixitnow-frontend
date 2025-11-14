@@ -83,7 +83,8 @@ export default function Home() {
       </header>
 
       {/* HERO */}
-      <section className="relative z-20 min-h-screen flex flex-col justify-center items-center text-center px-6">
+      <section className="relative z-20 py-32 flex flex-col justify-center items-center text-center px-6">
+
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -180,7 +181,7 @@ export default function Home() {
           {[
             "Verified Professionals",
             "Fast Doorstep Service",
-            "Secure Payments",
+            "Real Time Chat",
             "24×7 Support",
           ].map((text, index) => (
             <motion.div
