@@ -11,6 +11,7 @@ import plumbing from "../../images/plumbing.png";
 import cleaning from "../../images/cleaning.png";
 import electrician from "../../images/electrician.png";
 import carpenter from "../../images/carpenter.png";
+import mechanic from "../../images/mechanic.png";
 
 import {
   FaHome,
@@ -54,6 +55,7 @@ export default function Home() {
     { name: "Electrician", image: electrician },
     { name: "Carpentry", image: carpenter },
     { name: "General Repair", image: tools },
+    { name: "Mechanician", image: mechanic },
   ];
 
   const steps = [
@@ -78,7 +80,7 @@ export default function Home() {
     <div className="relative py-10 overflow-hidden">
       {/* BACKGROUND */}
       <div
-        className="absolute inset-0 bg-cover bg-center brightness-75"
+        className="absolute inset-0 bg-cover bg-center brightness-55"
         style={{ backgroundImage: `url(${tools})` }}
       ></div>
       <div className="absolute inset-0 bg-black/40"></div>
