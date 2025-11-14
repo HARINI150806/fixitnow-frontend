@@ -1,179 +1,228 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  FaMapMarkerAlt,
-  FaSearch,
-  FaTools,
-  FaBolt,
-  FaBroom,
-  FaPaintBrush,
-  FaChevronRight,
-} from "react-icons/fa";
+  HiOutlineMail,
+  HiOutlineLockClosed,
+  HiOutlineEye,
+  HiOutlineEyeOff,
+  HiLogin,
+} from "react-icons/hi";
+import { FaHome, FaWrench, FaTools, FaBolt, FaShower } from "react-icons/fa";
+import { userContext } from "../../content/Userprovider";
+import { login ,getProviderDocuments,getMyProfile} from "../../services/api";
+import tools from "../../images/tools.png";
 
-import toolsBg from "../../images/tools.png";
 
-export default function Home() {
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { UpdateUser } = useContext(userContext);
 
-  const services = [
-    { name: "Electrician", icon: <FaBolt /> },
-    { name: "Plumber", icon: <FaTools /> },
-    { name: "Cleaning", icon: <FaBroom /> },
-    { name: "Painting", icon: <FaPaintBrush /> },
-  ];
+ const handleLogin = async (e) => {
+  e.preventDefault();
+
+  if (!email || !password) {
+    setError("Please fill in all fields.");
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    setError("Please enter a valid email address.");
+    return;
+  }
+
+  setLoading(true);
+  setError("");
+
+  try {
+    // 1️⃣ Login API
+    const res = await login({ email, password });
+    const { token, role, verified, message, userId } = res.data;
+
+    // 2️⃣ Save token & update context
+    localStorage.setItem("token", token);
+    UpdateUser({ email, role, userId, verified });
+
+    // 3️⃣ PROVIDER-specific checks
+    if (role === "PROVIDER") {
+      // Get provider profile
+      const userRes = await getMyProfile();
+      const providerId = userRes.data.id;
+
+      // Fetch documents for this provider
+      const providerDocsRes = await getProviderDocuments(providerId);
+      const providerDocs = Array.isArray(providerDocsRes.data)
+        ? providerDocsRes.data
+        : [];
+
+      console.log("Provider documents:", providerDocs);
+
+      // Check rejected documents
+      const rejectedDoc = providerDocs.find(doc => doc.rejected);
+      if (rejectedDoc) {
+        setError(
+          `Message from admin: ${rejectedDoc.rejectionReason }. Account has been rejected `
+        );
+        return;
+      }
+
+      // Check verification status
+      if (!verified) {
+        setError(
+          "Your provider account is pending for admin verification. Please wait until approved."
+        );
+        return;
+      }
+
+      navigate("/provider-dashboard");
+      return;
+    }
+
+    // 4️⃣ ADMIN
+    if (role === "ADMIN") {
+      navigate("/admin-dashboard");
+      return;
+    }
+
+    // 5️⃣ CUSTOMER
+    if (role === "CUSTOMER") {
+      navigate("/customer-dashboard");
+      return;
+    }
+
+    // 6️⃣ Fallback
+    navigate("/");
+
+  } catch (err) {
+    console.error("Login failed:", err);
+
+    const serverMsg = err?.response?.data?.message || "";
+
+    if (serverMsg.toLowerCase().includes("invalid credentials") || err?.response?.status === 401) {
+      setError("Incorrect password. Please try again.");
+    } else if (
+      serverMsg.toLowerCase().includes("user not found") ||
+      serverMsg.toLowerCase().includes("email not found") ||
+      err?.response?.status === 404
+    ) {
+      setError("Email does not exist. Please sign up first.");
+    } else {
+      setError("Unable to login. Please check your network and try again.");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
 
   return (
-    <div className="relative min-h-screen overflow-hidden text-white">
-
+    <div className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden">
       {/* Background */}
       <div
-        className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
-        style={{ backgroundImage: `url(${toolsBg})` }}
-      ></div>
-      <div className="absolute inset-0 bg-black/70"></div>
+  className="absolute inset-0 bg-cover bg-center filter blur-sm scale-105"
+  style={{ backgroundImage: `url(${tools})` }}
+></div>
+      <div className="absolute inset-0 bg-black/40"></div>
 
-      {/* Floating shapes */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, x: 50, y: -30 }}
-        transition={{ duration: 2 }}
-        className="absolute top-20 left-20 w-40 h-40 rounded-full bg-orange-500/20 blur-2xl"
-      ></motion.div>
+      {/* Logo */}
+      <div className="absolute top-4 left-4 z-20 flex items-center space-x-2">
+        <div className="relative w-10 h-10">
+          <FaHome className="text-white w-full h-full" />
+          <FaWrench className="text-black w-5 h-5 absolute bottom-0 right-0" />
+        </div>
+        <span className="text-white font-bold text-xl">FixItNow</span>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, x: -50, y: 30 }}
-        transition={{ duration: 2 }}
-        className="absolute bottom-32 right-24 w-56 h-56 rounded-full bg-indigo-500/20 blur-2xl"
-      ></motion.div>
+      {/* Icons Row */}
+      <div className="relative z-10 flex space-x-6 mb-8 text-white text-3xl">
+        <FaHome className="hover:text-indigo-400 transition" title="Home Repair" />
+        <FaWrench className="hover:text-indigo-400 transition" title="Plumbing" />
+        <FaTools className="hover:text-indigo-400 transition" title="General Services" />
+        <FaBolt className="hover:text-indigo-400 transition" title="Electrical" />
+        <FaShower className="hover:text-indigo-400 transition" title="Bathroom Fixes" />
+      </div>
 
-      {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 pt-28">
-        
-        {/* Hero Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="backdrop-blur-2xl bg-white/10 border border-white/20 rounded-3xl p-10 shadow-xl text-center"
-        >
-          <h1 className="text-5xl font-extrabold drop-shadow-md">
-            FixItNow — Your Neighborhood Service Hub
-          </h1>
+      {/* Form */}
+      <div className="relative z-10 w-full max-w-md flex flex-col items-center px-4">
+        <h1 className="text-5xl font-bold text-white mb-6">Welcome Back</h1>
+        <p className="text-white text-lg mb-10 text-center">
+          Log in to access your FixItNow account
+        </p>
 
-          <p className="text-gray-300 mt-4 text-lg max-w-2xl mx-auto">
-            Book trusted electricians, plumbers, cleaners, and repair experts in minutes.
-            Smart. Fast. Nearby.
-          </p>
-
-          {/* Search Bar */}
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <div className="flex items-center bg-white/15 border border-white/20 px-4 py-3 rounded-xl backdrop-blur-xl w-full sm:w-72">
-              <FaMapMarkerAlt className="text-orange-300 text-xl mr-3" />
-              <input
-                type="text"
-                placeholder="Enter your location"
-                className="bg-transparent text-white placeholder-gray-300 outline-none w-full"
-              />
+        <form className="w-full flex flex-col space-y-6" onSubmit={handleLogin}>
+          {/* Email - wrapper uses relative so icon centers via inset-y-0 */}
+          <div className="relative">
+            <div className="absolute left-3 inset-y-0 flex items-center pointer-events-none">
+              <HiOutlineMail className="text-white text-xl" />
             </div>
 
-            <div className="flex items-center bg-white/15 border border-white/20 px-4 py-3 rounded-xl backdrop-blur-xl w-full sm:w-72">
-              <FaSearch className="text-indigo-300 text-xl mr-3" />
-              <input
-                type="text"
-                placeholder="What service do you need?"
-                className="bg-transparent text-white placeholder-gray-300 outline-none w-full"
-              />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={`w-full pl-12 px-4 py-3 rounded-md border 
+                
+             bg-white/20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+            />
+
+            
+          </div>
+
+          {/* Password */}
+          <div className="relative">
+            <div className="absolute left-3 inset-y-0 flex items-center pointer-events-none">
+              <HiOutlineLockClosed className="text-white text-xl" />
             </div>
 
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full pr-12 pl-12 px-4 py-3 rounded-md border border-white bg-white/20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
             <button
-              className="px-6 py-3 rounded-xl text-white font-semibold bg-gradient-to-r 
-              from-orange-500 to-purple-600 hover:scale-105 transition shadow-lg"
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 inset-y-0 flex items-center text-white"
             >
-              Search
+              {showPassword ? <HiOutlineEyeOff /> : <HiOutlineEye />}
             </button>
           </div>
-        </motion.div>
 
-        {/* Popular Services */}
-        <div className="mt-20">
-          <h2 className="text-3xl font-bold text-center mb-8 text-orange-300">
-            Popular Services Near You
-          </h2>
+          {error && (
+            <p className="text-red-400 text-sm text-center bg-black/30 p-2 rounded">
+              {error}
+            </p>
+          )}
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {services.map((s, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                onClick={() => navigate(`/service/${s.name.toLowerCase()}`)}
-                className="cursor-pointer bg-white/10 backdrop-blur-xl border border-white/20 
-                p-6 rounded-2xl hover:scale-105 hover:shadow-2xl transition text-center"
-              >
-                <div className="text-5xl text-orange-300 mb-3">{s.icon}</div>
-                <h3 className="text-xl font-semibold">{s.name}</h3>
-                <p className="text-gray-300 mt-1 text-sm">
-                  Trusted professionals available near you.
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* How it Works */}
-        <div className="mt-28">
-          <h2 className="text-3xl font-bold text-center mb-8 text-indigo-300">
-            How FixItNow Works
-          </h2>
-
-          <div className="grid gap-10 md:grid-cols-3 text-center">
-            {[
-              {
-                step: "1",
-                title: "Search Services",
-                desc: "Find nearby electricians, plumbers, cleaners, and more.",
-              },
-              {
-                step: "2",
-                title: "Book Instantly",
-                desc: "Choose a timeslot and confirm your service.",
-              },
-              {
-                step: "3",
-                title: "Get it Done",
-                desc: "A verified expert arrives and completes the job.",
-              },
-            ].map((w, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.15 }}
-                className="bg-white/10 backdrop-blur-xl p-8 border border-white/20 rounded-2xl"
-              >
-                <div className="text-4xl font-extrabold text-orange-400 mb-3">
-                  {w.step}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{w.title}</h3>
-                <p className="text-gray-300">{w.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="text-center mt-24 mb-20">
+          {/* Button */}
           <button
-            onClick={() => navigate("/register")}
-            className="px-10 py-4 text-xl rounded-xl text-white font-bold 
-            bg-gradient-to-r from-orange-500 to-purple-600 hover:scale-110 transition shadow-xl flex items-center gap-3 mx-auto"
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 flex items-center justify-center space-x-2 rounded-md text-white font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 shadow-lg transition-transform transform hover:scale-105"
           >
-            Get Started <FaChevronRight />
+            <HiLogin className="text-xl" />
+            <span>{loading ? "Logging In..." : "Log In"}</span>
           </button>
-        </div>
+        </form>
+
+        <p className="text-white text-sm mt-6">
+          Don’t have an account?{" "}
+          <Link to="/register" className="underline font-medium">
+            Sign Up
+          </Link>
+        </p>
       </div>
     </div>
   );
