@@ -10,7 +10,6 @@ import plumbing from "../../images/plumbing.png";
 import cleaning from "../../images/cleaning.png";
 import electrician from "../../images/electrician.png";
 import carpenter from "../../images/carpenter.png";
-import mechanic from "../../images/mechanic.png";
 
 import {
   FaHome,
@@ -27,7 +26,6 @@ export default function Home() {
     { name: "Electrician", image: electrician },
     { name: "Carpentry", image: carpenter },
     { name: "General Repair", image: tools },
-    { name: "Mechanician", image: mechanic },
   ];
 
   const steps = [
@@ -49,7 +47,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative py-20 overflow-hidden">
       {/* BACKGROUND */}
       <div
         className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
@@ -83,8 +81,7 @@ export default function Home() {
       </header>
 
       {/* HERO */}
-      <section className="relative z-20 py-32 flex flex-col justify-center items-center text-center px-6">
-
+      <section className="relative z-20 min-h-screen flex flex-col justify-center items-center text-center px-6">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -120,7 +117,7 @@ export default function Home() {
       </section>
 
       {/* POPULAR SERVICES */}
-      <section className="relative z-20 py-16 px-6">
+      <section className="relative z-20 py-10 px-6">
         <h2 className="text-center text-3xl font-bold text-white drop-shadow mb-8">
           Popular Services
         </h2>
@@ -148,7 +145,7 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS - NEW ICON BASED */}
-      <section className="relative z-20 py-16 px-6">
+      <section className="relative z-20 py-10 px-6">
         <h3 className="text-3xl font-bold text-white text-center mb-10 drop-shadow">
           How It Works
         </h3>
@@ -172,7 +169,7 @@ export default function Home() {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="relative z-20 py-16 text-center px-6">
+      <section className="relative z-20 py-10 text-center px-6">
         <h3 className="text-3xl font-bold text-white drop-shadow mb-10">
           Why Choose FixItNow?
         </h3>
@@ -181,7 +178,7 @@ export default function Home() {
           {[
             "Verified Professionals",
             "Fast Doorstep Service",
-            "Real Time Chat",
+            "Secure Payments",
             "24×7 Support",
           ].map((text, index) => (
             <motion.div
