@@ -1,7 +1,8 @@
 // Updated Home.jsx with aligned layout and icon-based "How It Works" section
 // (Images removed from How It Works section and replaced with icons)
 
-import {React,useState }from "react";
+import React, { useState, useEffect } from "react";
+
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -19,6 +20,32 @@ import {
   FaSignInAlt,
   FaCheckCircle,
 } from "react-icons/fa";
+
+function RotatingWords() {
+  const words = [
+    "Electrical Issues",
+    "Plumbing Problems",
+    "Cleaning Needs",
+    "Carpentry Work",
+    "Home Repairs"
+  ];
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % words.length);
+    }, 2000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <span className="text-purple-300 drop-shadow-lg transition-all duration-500">
+      {words[index]}
+    </span>
+  );
+}
 
 export default function Home() {
   const categories = [
@@ -51,7 +78,7 @@ export default function Home() {
     <div className="relative py-10 overflow-hidden">
       {/* BACKGROUND */}
       <div
-        className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
+        className="absolute inset-0 bg-cover bg-center brightness-75"
         style={{ backgroundImage: `url(${tools})` }}
       ></div>
       <div className="absolute inset-0 bg-black/40"></div>
@@ -59,9 +86,11 @@ export default function Home() {
       {/* NAVBAR */}
       <header className="absolute top-0 w-full px-6 py-4 flex justify-between items-center z-30">
         <div className="flex items-center space-x-3 text-white drop-shadow-lg">
-          
-          <FaHome className="text-white w-full h-full" />
-          <FaWrench className="text-black w-5 h-5 absolute bottom-0 right-0" />
+          <div className="relative">
+   <FaHome className="text-white text-3xl" />
+   <FaWrench className="text-black text-sm absolute bottom-0 right-0" />
+</div>
+
           <span className="text-2xl font-bold">FixItNow</span>
         </div>
 
@@ -94,23 +123,24 @@ export default function Home() {
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="text-white text-lg mt-4 max-w-2xl opacity-90 drop-shadow-lg"
-        >
-          Electricians, Plumbers, Carpenters & Cleaners – all just a tap away.
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 0.4 }}
+  className="text-white text-lg mt-4 max-w-2xl opacity-90 drop-shadow-lg"
+>
+  Electricians, Plumbers, Carpenters & Cleaners – all just a tap away.
+</motion.p>
 
-        {/* ROTATING SERVICE WORDS */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="text-2xl md:text-3xl font-semibold text-white mt-6 h-10"
-        >
-          <RotatingWords />
-        </motion.div>
-        </motion.p>
+{/* ROTATING SERVICE WORDS */}
+<motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 0.8 }}
+  className="text-2xl md:text-3xl font-semibold text-white mt-6 h-10"
+>
+  <RotatingWords />
+</motion.div>
+
 
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
@@ -232,30 +262,5 @@ export default function Home() {
         © 2025 FixItNow — All Rights Reserved.
       </footer>
     </div>
-  );
-}
-function RotatingWords() {
-  const words = [
-    "Electrical Issues",
-    "Plumbing Problems",
-    "Cleaning Needs",
-    "Carpentry Work",
-    "Home Repairs"
-  ];
-
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % words.length);
-    }, 2000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <span className="text-purple-300 drop-shadow-lg transition-all duration-500">
-      {words[index]}
-    </span>
   );
 }
