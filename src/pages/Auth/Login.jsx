@@ -1,137 +1,41 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import {
-  HiOutlineMail,
-  HiOutlineLockClosed,
-  HiOutlineEye,
-  HiOutlineEyeOff,
-  HiLogin,
-} from "react-icons/hi";
-import { FaHome, FaWrench, FaTools, FaBolt, FaShower } from "react-icons/fa";
-import { userContext } from "../../content/Userprovider";
-import { login ,getProviderDocuments,getMyProfile} from "../../services/api";
-import tools from "../../images/tools.png";
+  FaHome,
+  FaWrench,
+  FaTools,
+  FaBolt,
+  FaShower,
+} from "react-icons/fa";
+import cleaning from "../../images/cleaning.png";
+import plumbing from "../../images/plumbing.png";
+import electrician from "../../images/electrician.png";
+import painting from "../../images/painting.png";
+import toolsBg from "../../images/tools.png";
 
+const rustBrown = "#6e290c"; // matches login theme
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  
-  const [loading, setLoading] = useState(false);
+const Home = ({ customer, onExploreClick }) => {
   const navigate = useNavigate();
-  const { UpdateUser } = useContext(userContext);
+  const isLoggedIn = !!customer;
 
- const handleLogin = async (e) => {
-  e.preventDefault();
-
-  if (!email || !password) {
-    setError("Please fill in all fields.");
-    return;
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    setError("Please enter a valid email address.");
-    return;
-  }
-
-  setLoading(true);
-  setError("");
-
-  try {
-    // 1️⃣ Login API
-    const res = await login({ email, password });
-    const { token, role, verified, message, userId } = res.data;
-
-    // 2️⃣ Save token & update context
-    localStorage.setItem("token", token);
-    UpdateUser({ email, role, userId, verified });
-
-    // 3️⃣ PROVIDER-specific checks
-    if (role === "PROVIDER") {
-      // Get provider profile
-      const userRes = await getMyProfile();
-      const providerId = userRes.data.id;
-
-      // Fetch documents for this provider
-      const providerDocsRes = await getProviderDocuments(providerId);
-      const providerDocs = Array.isArray(providerDocsRes.data)
-        ? providerDocsRes.data
-        : [];
-
-      console.log("Provider documents:", providerDocs);
-
-      // Check rejected documents
-      const rejectedDoc = providerDocs.find(doc => doc.rejected);
-      if (rejectedDoc) {
-        setError(
-          `Message from admin: ${rejectedDoc.rejectionReason }. Account has been rejected `
-        );
-        return;
-      }
-
-      // Check verification status
-      if (!verified) {
-        setError(
-          "Your provider account is pending for admin verification. Please wait until approved."
-        );
-        return;
-      }
-
-      navigate("/provider-dashboard");
-      return;
-    }
-
-    // 4️⃣ ADMIN
-    if (role === "ADMIN") {
-      navigate("/admin-dashboard");
-      return;
-    }
-
-    // 5️⃣ CUSTOMER
-    if (role === "CUSTOMER") {
-      navigate("/customer-dashboard");
-      return;
-    }
-
-    // 6️⃣ Fallback
-    navigate("/");
-
-  } catch (err) {
-    console.error("Login failed:", err);
-
-    const serverMsg = err?.response?.data?.message || "";
-
-    if (serverMsg.toLowerCase().includes("invalid credentials") || err?.response?.status === 401) {
-      setError("Incorrect password. Please try again.");
-    } else if (
-      serverMsg.toLowerCase().includes("user not found") ||
-      serverMsg.toLowerCase().includes("email not found") ||
-      err?.response?.status === 404
-    ) {
-      setError("Email does not exist. Please sign up first.");
-    } else {
-      setError("Unable to login. Please check your network and try again.");
-    }
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-
-
+  const services = [
+    { name: "Cleaning", img: cleaning },
+    { name: "Plumbing", img: plumbing },
+    { name: "Electrician", img: electrician },
+    { name: "Painting", img: painting },
+  ];
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden">
+    <div className="relative min-h-screen text-gray-800 flex flex-col overflow-hidden">
+
       {/* Background */}
       <div
-  className="absolute inset-0 bg-cover bg-center filter blur-sm scale-105"
-  style={{ backgroundImage: `url(${tools})` }}
-></div>
-      <div className="absolute inset-0 bg-black/40"></div>
+        className="absolute inset-0 bg-cover bg-center filter blur-sm scale-105"
+        style={{ backgroundImage: `url(${toolsBg})` }}
+      ></div>
+      <div className="absolute inset-0 bg-black/50"></div>
 
       {/* Logo */}
       <div className="absolute top-4 left-4 z-20 flex items-center space-x-2">
@@ -143,87 +47,139 @@ export default function Login() {
       </div>
 
       {/* Icons Row */}
-      <div className="relative z-10 flex space-x-6 mb-8 text-white text-3xl">
-        <FaHome className="hover:text-indigo-400 transition" title="Home Repair" />
-        <FaWrench className="hover:text-indigo-400 transition" title="Plumbing" />
-        <FaTools className="hover:text-indigo-400 transition" title="General Services" />
-        <FaBolt className="hover:text-indigo-400 transition" title="Electrical" />
-        <FaShower className="hover:text-indigo-400 transition" title="Bathroom Fixes" />
+      <div className="relative z-10 flex space-x-6 mb-4 mt-20 justify-center text-white text-3xl">
+        <FaHome className="hover:text-orange-300 transition" />
+        <FaWrench className="hover:text-orange-300 transition" />
+        <FaTools className="hover:text-orange-300 transition" />
+        <FaBolt className="hover:text-orange-300 transition" />
+        <FaShower className="hover:text-orange-300 transition" />
       </div>
 
-      {/* Form */}
-      <div className="relative z-10 w-full max-w-md flex flex-col items-center px-4">
-        <h1 className="text-5xl font-bold text-white mb-6">Welcome Back</h1>
-        <p className="text-white text-lg mb-10 text-center">
-          Log in to access your FixItNow account
+      {/* Hero Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative z-10 mx-auto mt-4 bg-white/10 backdrop-blur-xl shadow-2xl max-w-2xl p-10 rounded-2xl border border-white/20 text-center"
+      >
+        <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow">
+          Welcome {isLoggedIn ? customer?.name : "to FixItNow!"}
+        </h1>
+
+        <p className="text-white/90 mt-4 text-lg">
+          {isLoggedIn
+            ? "Find trusted professionals near you and get your tasks done easily."
+            : "Login or Sign Up to access fast, reliable home services!"}
         </p>
 
-        <form className="w-full flex flex-col space-y-6" onSubmit={handleLogin}>
-          {/* Email - wrapper uses relative so icon centers via inset-y-0 */}
-          <div className="relative">
-            <div className="absolute left-3 inset-y-0 flex items-center pointer-events-none">
-              <HiOutlineMail className="text-white text-xl" />
-            </div>
+        {/* Buttons */}
+        <div className="mt-8 flex gap-4 flex-wrap justify-center">
+          {!isLoggedIn ? (
+            <>
+              <button
+                onClick={() => navigate("/login")}
+                className="px-6 py-3 rounded-lg text-white font-semibold shadow-lg transition transform hover:scale-105 bg-gradient-to-r from-indigo-500 to-purple-600"
+              >
+                Login
+              </button>
 
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={`w-full pl-12 px-4 py-3 rounded-md border 
-                
-             bg-white/20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-indigo-500`}
-            />
-
-            
-          </div>
-
-          {/* Password */}
-          <div className="relative">
-            <div className="absolute left-3 inset-y-0 flex items-center pointer-events-none">
-              <HiOutlineLockClosed className="text-white text-xl" />
-            </div>
-
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full pr-12 pl-12 px-4 py-3 rounded-md border border-white bg-white/20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+              <button
+                onClick={() => navigate("/register")}
+                className="px-6 py-3 rounded-lg text-white font-semibold shadow-lg transition transform hover:scale-105 bg-gradient-to-r from-orange-500 to-orange-700"
+              >
+                Sign Up
+              </button>
+            </>
+          ) : (
             <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 inset-y-0 flex items-center text-white"
+              onClick={onExploreClick}
+              className="px-6 py-3 rounded-lg text-white font-semibold shadow-lg transition transform hover:scale-105 bg-gradient-to-r from-orange-500 to-orange-700"
             >
-              {showPassword ? <HiOutlineEyeOff /> : <HiOutlineEye />}
+              Explore Services
             </button>
+          )}
+        </div>
+      </motion.div>
+
+      {/* Popular Services */}
+      <div className="relative z-10 px-6 mt-16 pb-20">
+        <h2 className="text-3xl font-bold text-center text-white drop-shadow mb-10">
+          Popular Services
+        </h2>
+
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
+          {services.map((service, index) => (
+            <motion.div
+              key={service.name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              onClick={() =>
+                navigate(`/service/${service.name.toLowerCase()}`)
+              }
+              className="cursor-pointer bg-white/10 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl hover:scale-[1.03] transition"
+            >
+              <img
+                src={service.img}
+                alt={service.name}
+                className="w-full h-44 object-cover"
+              />
+
+              <div className="p-4 text-center">
+                <h3 className="text-xl font-bold text-white drop-shadow">
+                  {service.name}
+                </h3>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="relative z-10 bg-black/40 backdrop-blur-lg text-white mt-auto">
+        <div className="max-w-7xl mx-auto px-6 py-10 grid gap-10 md:grid-cols-4">
+          <div>
+            <h3 className="text-xl font-semibold">FixItNow</h3>
+            <p className="text-gray-300 mt-2 text-sm">
+              Quick, reliable home services at your doorstep.
+            </p>
           </div>
 
-          {error && (
-            <p className="text-red-400 text-sm text-center bg-black/30 p-2 rounded">
-              {error}
-            </p>
-          )}
+          <div>
+            <h4 className="font-semibold mb-3">Company</h4>
+            <ul className="space-y-1 text-gray-300 text-sm">
+              <li>About</li>
+              <li>Careers</li>
+              <li>Blog</li>
+            </ul>
+          </div>
 
-          {/* Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 flex items-center justify-center space-x-2 rounded-md text-white font-semibold bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 shadow-lg transition-transform transform hover:scale-105"
-          >
-            <HiLogin className="text-xl" />
-            <span>{loading ? "Logging In..." : "Log In"}</span>
-          </button>
-        </form>
+          <div>
+            <h4 className="font-semibold mb-3">Support</h4>
+            <ul className="space-y-1 text-gray-300 text-sm">
+              <li>Help Center</li>
+              <li>How it Works</li>
+              <li>Safety</li>
+            </ul>
+          </div>
 
-        <p className="text-white text-sm mt-6">
-          Don’t have an account?{" "}
-          <Link to="/register" className="underline font-medium">
-            Sign Up
-          </Link>
-        </p>
-      </div>
+          <div>
+            <h4 className="font-semibold mb-3">Contact</h4>
+            <ul className="space-y-1 text-gray-300 text-sm">
+              <li>Email: support@fixitnow.app</li>
+              <li>Phone: +91 98765 43210</li>
+              <li>Chennai, India</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-white/20">
+          <div className="px-6 py-3 text-xs text-center text-gray-300">
+            © {new Date().getFullYear()} FixItNow — All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
   );
-}
+};
+
+export default Home;
