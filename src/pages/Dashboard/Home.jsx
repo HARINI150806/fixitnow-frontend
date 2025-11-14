@@ -7,16 +7,9 @@ import plumbing from "../../images/plumbing.png";
 import cleaning from "../../images/cleaning.png";
 import electrician from "../../images/electrician.png";
 import carpenter from "../../images/carpenter.png";
-// import mechanic from "../../images/mechanic.png";
-// import worker from "../../images/worker.png";
 
 import {
-  FaBolt,
-  FaTools,
-  FaHammer,
   FaHome,
-  FaWrench,
-  FaShower,
   FaStar,
 } from "react-icons/fa";
 
@@ -27,7 +20,6 @@ export default function Home() {
     { name: "Electrician", image: electrician },
     { name: "Carpentry", image: carpenter },
     { name: "General Repair", image: tools },
-    // { name: "Mechanic", image: mechanic },
   ];
 
   return (
@@ -158,22 +150,10 @@ export default function Home() {
         </h3>
 
         <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto text-center">
-          {[
-            {
-              title: "Choose a Service",
-              image: electrician,
-              desc: "Select the type of service you need.",
-            },
-            {
-              title: "Login & Book",
-              image: tools,
-              desc: "Experience quick booking with verified professionals.",
-            },
-            {
-              title: "Get It Fixed",
-              image: plumbing,
-              desc: "Sit back and relax while our experts handle the job.",
-            },
+          {[ 
+            { title: "Choose a Service", image: electrician, desc: "Select the service you need." },
+            { title: "Login & Book", image: tools, desc: "Quick booking with verified professionals." },
+            { title: "Get It Fixed", image: plumbing, desc: "Sit back while experts handle the job." },
           ].map((item, index) => (
             <motion.div
               key={index}
@@ -184,7 +164,9 @@ export default function Home() {
               className="bg-white/20 backdrop-blur-md p-8 rounded-xl border border-white/20 shadow-xl"
             >
               <img src={item.image} className="h-24 mx-auto rounded-lg" />
-              <h4 className="text-white text-xl font-semibold mt-4">{item.title}</h4>
+              <h4 className="text-white text-xl font-semibold mt-4">
+                {item.title}
+              </h4>
               <p className="text-white/80 mt-2">{item.desc}</p>
             </motion.div>
           ))}
@@ -198,7 +180,6 @@ export default function Home() {
         </h3>
 
         <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
-
           {[
             "Verified Professionals",
             "Fast Doorstep Service",
@@ -217,7 +198,6 @@ export default function Home() {
               <p className="text-white font-semibold mt-2">{text}</p>
             </motion.div>
           ))}
-
         </div>
       </section>
 
@@ -230,12 +210,12 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {[
             {
-              text: "Plumber arrived exactly on time and fixed my issue quickly!",
+              text: "Plumber arrived exactly on time and fixed the issue quickly!",
               img: plumbing,
               name: "Priya S.",
             },
             {
-              text: "Electrician was professional, friendly and fast.",
+              text: "Electrician was professional, friendly, and fast.",
               img: electrician,
               name: "Raj K.",
             },
@@ -265,11 +245,6 @@ export default function Home() {
 
       {/* PROVIDER CTA */}
       <section className="relative z-20 py-20 text-center px-6">
-        <img
-          src={worker}
-          className="h-40 mx-auto mb-6 opacity-80 drop-shadow-lg"
-        />
-
         <h3 className="text-3xl font-bold text-white drop-shadow mb-4">
           Are You a Service Provider?
         </h3>
