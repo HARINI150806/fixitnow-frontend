@@ -1,7 +1,7 @@
 // Updated Home.jsx with aligned layout and icon-based "How It Works" section
 // (Images removed from How It Works section and replaced with icons)
 
-import React from "react";
+import {React,useState }from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -13,6 +13,7 @@ import carpenter from "../../images/carpenter.png";
 
 import {
   FaHome,
+  FaWrench,
   FaStar,
   FaClipboardList,
   FaSignInAlt,
@@ -58,7 +59,9 @@ export default function Home() {
       {/* NAVBAR */}
       <header className="absolute top-0 w-full px-6 py-4 flex justify-between items-center z-30">
         <div className="flex items-center space-x-3 text-white drop-shadow-lg">
-          <FaHome className="text-white text-3xl" />
+          
+          <FaHome className="text-white w-full h-full" />
+          <FaWrench className="text-black w-5 h-5 absolute bottom-0 right-0" />
           <span className="text-2xl font-bold">FixItNow</span>
         </div>
 
