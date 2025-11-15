@@ -1,6 +1,6 @@
 import React from 'react';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
-import { FiXClock, FiXCircle } from 'react-icons/fi';
+import { FiClock, FiXCircle } from 'react-icons/fi';
 import { BiClipboard } from 'react-icons/bi';
 
 const rustBrown = "#6e290cff";
@@ -13,7 +13,7 @@ export default function BookingsCard({ bookings, loading }) {
     switch(status.toLowerCase()) {
       case "completed": return <span className="flex items-center gap-1 px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full"><AiOutlineCheckCircle /> {status}</span>;
       case "pending": return <span className="flex items-center gap-1 px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded-full"><FiClock /> {status}</span>;
-      case "cancelled": return <span className="flex items-center gap-1 px-2 py-1 text-xs bg-red-100 text-red-700 rounded-full"><FiXClock /> {status}</span>;
+      case "cancelled": return <span className="flex items-center gap-1 px-2 py-1 text-xs bg-red-100 text-red-700 rounded-full"><FiClock /> {status}</span>;
       case "confirmed": return <span className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full"><FiClock /> {status}</span>;
       default:
         return <span className="flex items-center gap-1 px-2 py-1 text-xs bg-black text-white rounded-full">{status}</span>;
