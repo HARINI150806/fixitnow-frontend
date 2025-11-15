@@ -5,7 +5,7 @@ import {
 } from "react-icons/fi";
 import { BiClipboard, BiUserCircle } from "react-icons/bi";
 import { MdAdminPanelSettings } from "react-icons/md";
-import { FaUserCheck, FaExclamationTriangle } from "react-icons/fa";
+import { FaUserCheck, FaExclamationTriangle, } from "react-icons/fa";
 import {
   getAllUsers, getAllServices, getAllBookings,
 } from "../../services/api";

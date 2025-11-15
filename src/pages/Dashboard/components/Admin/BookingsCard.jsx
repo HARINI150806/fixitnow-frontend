@@ -1,6 +1,6 @@
 import React from 'react';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
-import { FiClock, FiXCircle } from 'react-icons/fi';
+import { FiXClock, FiXCircle } from 'react-icons/fi';
 import { BiClipboard } from 'react-icons/bi';
 
 const rustBrown = "#6e290cff";
